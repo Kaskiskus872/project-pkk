@@ -4,6 +4,7 @@ import express from 'express';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const app = express();
 
@@ -32,7 +33,8 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 
 
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log('Server is running on port 3000');
 });
