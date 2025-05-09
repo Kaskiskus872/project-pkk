@@ -137,14 +137,14 @@ export const updateProduct = async (req, res) => {
       imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/uploads/products/${encodeURIComponent(timestampedFileName)}`;
     }
 
-    // Update product details
+    // Update product details, including categoryId
     await product.update({
       name,
       price,
       description,
       stock,
       imageUrl,
-      categoryId,
+      CategoryId: categoryId,
     });
 
     res.status(200).json({ message: 'Product updated successfully', data: product });
