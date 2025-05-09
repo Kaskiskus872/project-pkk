@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/supabaseClient.js';
+import Category from './category.js';
 
 /**
  * Fungsi init model Product
@@ -8,7 +9,7 @@ import sequelize from '../config/supabaseClient.js';
  */
 
 export default (sequelize) => {
-  return sequelize.define('Product', {
+  const Product = sequelize.define('Product', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -28,5 +29,9 @@ export default (sequelize) => {
       type: DataTypes.STRING,
     },
   });
+
+  // Relasi dengan Category
+  Product.belongsTo(Category(sequelize), { foreignKey: 'CategoryId', onDelete: 'SET NULL' });
+
   return Product;
 };

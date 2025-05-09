@@ -27,9 +27,6 @@ export const getAllProducts = async (req, res) => {
     const products = await Product.findAll({
       include: [{ model: Category, attributes: ['id', 'name'] }],
     });
-    if (products.length === 0) {
-      return res.status(200).json({ message: 'Get all products success, no product found', data: [] });
-    }
     res.status(200).json({ message: 'Products retrieved successfully', data: products });
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve products', error: error.message });
