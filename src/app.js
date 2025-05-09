@@ -3,6 +3,8 @@ import './models/index.js';
 import express from 'express';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -32,9 +34,16 @@ app.use('/auth', authRoutes);
 // Product routes
 app.use('/products', productRoutes);
 
+// Category routes
+app.use('/categories', categoryRoutes);
+
+// Cart routes
+app.use('/cart', cartRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log('Server is running on port 3000');
 });
+
+export default app;

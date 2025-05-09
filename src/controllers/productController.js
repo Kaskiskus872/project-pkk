@@ -1,4 +1,4 @@
-import { Product } from '../models/index.js';
+import { Product, Category } from '../models/index.js';
 import { supabase } from '../config/supabaseClient.js';
 
 // Helper function to upload image to Supabase
@@ -24,11 +24,13 @@ const deleteImageFromSupabase = async (imageUrl) => {
 // Get all products
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      include: [{ model: Category, attributes: ['id', 'name'] }],
+    });
     if (products.length === 0) {
       return res.status(200).json({ message: 'Get all products success, no product found', data: [] });
     }
-    res.status(200).json({ message: 'Get all products success', data: products });
+    res.status(200).json({ message: 'Products retrieved successfully', data: products });
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve products', error: error.message });
   }
@@ -37,11 +39,13 @@ export const getAllProducts = async (req, res) => {
 // Get product by ID
 export const getProductById = async (req, res) => {
   try {
-    const product = await Product.findByPk(req.params.id);
+    const product = await Product.findByPk(req.params.id, {
+      include: [{ model: Category, attributes: ['id', 'name'] }],
+    });
     if (!product) {
-      return res.status(404).json({ message: 'Get product by ID success, product not found' });
+      return res.status(404).json({ message: 'Product not found' });
     }
-    res.status(200).json({ message: 'Get product by ID success', data: product });
+    res.status(200).json({ message: 'Product retrieved successfully', data: product });
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve product', error: error.message });
   }
@@ -50,7 +54,7 @@ export const getProductById = async (req, res) => {
 // Create a new product
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, description, stock } = req.body;
+    const { name, price, description, stock, categoryId } = req.body;
 
     console.log('Request body:', req.body);
     console.log('Uploaded file:', req.file);
@@ -85,6 +89,7 @@ export const createProduct = async (req, res) => {
       description,
       stock,
       imageUrl,
+      CategoryId: categoryId, // Ensure categoryId is saved
     });
 
     res.status(201).json({ message: 'Product created successfully', data: product });
@@ -97,7 +102,7 @@ export const createProduct = async (req, res) => {
 // Update product with optional image update
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, stock } = req.body;
+    const { name, price, description, stock, categoryId } = req.body;
 
     console.log('Request body:', req.body);
     console.log('Uploaded file:', req.file);
@@ -142,6 +147,7 @@ export const updateProduct = async (req, res) => {
       description,
       stock,
       imageUrl,
+      categoryId,
     });
 
     res.status(200).json({ message: 'Product updated successfully', data: product });

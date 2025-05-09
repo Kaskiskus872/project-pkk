@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/supabaseClient.js';
+import User from './users.js';
 
 /**
  * Fungsi init model Cart
@@ -8,8 +9,12 @@ import sequelize from '../config/supabaseClient.js';
  */
 
 export default (sequelize) => {
-    return sequelize.define('Cart', {
+    const Cart = sequelize.define('Cart', {
       // Tidak perlu field tambahan
     });
-  };
-  
+
+    // Relasi dengan User
+    Cart.belongsTo(User(sequelize), { foreignKey: 'UserId', onDelete: 'CASCADE' });
+
+    return Cart;
+};
