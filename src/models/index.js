@@ -8,6 +8,7 @@ import defineOrderItem from './orderItem.js';
 import defineCategory from './category.js';
 import defineCart from './cart.js';
 import defineCartItem from './cartItem.js';
+import defineRating from './rating.js';
 
 // inisialisasi model
 const User = defineUser(sequelize);
@@ -17,6 +18,7 @@ const OrderItem = defineOrderItem(sequelize);
 const Category = defineCategory(sequelize);
 const Cart = defineCart(sequelize);
 const CartItem = defineCartItem(sequelize);
+const Rating = defineRating(sequelize);
 
 // Relasi antar model
 User.hasMany(Order);
@@ -43,6 +45,11 @@ CartItem.belongsTo(Cart);
 Product.hasMany(CartItem);
 CartItem.belongsTo(Product);
 
+// Relasi Rating dan User
+Rating.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Rating.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
+User.hasMany(Rating, { foreignKey: 'userId' });
+Product.hasMany(Rating, { foreignKey: 'productId' });
 
 export {
   sequelize,
@@ -53,4 +60,5 @@ export {
   Category,
   Cart,
   CartItem,
+  Rating,
 };
