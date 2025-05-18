@@ -6,6 +6,7 @@ import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import ratingRoutes from './routes/ratingRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -43,6 +44,9 @@ app.use('/cart', cartRoutes);
 
 // Rating routes
 app.use('/ratings', ratingRoutes);
+
+// Order routes
+app.use('/orders', orderRoutes);
 
 const PORT = process.env.PORT || 3000;
 
