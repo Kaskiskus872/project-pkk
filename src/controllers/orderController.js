@@ -90,10 +90,21 @@ export const deleteOrder = async (req, res) => {
   }
 };
 
+export const deleteAllOrders = async (req, res) => {
+  try {
+    await OrderItem.destroy({ where: {} });
+    await Order.destroy({ where: {} });
+    res.json({ message: 'Semua order berhasil dihapus' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export default {
   createOrder,
   getUserOrders,
   getOrderById,
   updateOrderStatus,
-  deleteOrder
+  deleteOrder,
+  deleteAllOrders
 };

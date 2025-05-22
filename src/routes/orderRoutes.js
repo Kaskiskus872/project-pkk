@@ -18,4 +18,7 @@ router.put('/:orderId/status', verifyUser, orderController.updateOrderStatus);
 // Hapus order (opsional)
 router.delete('/:orderId', orderController.deleteOrder);
 
+// Hapus semua order (hanya admin)
+router.delete('/', verifyAdmin, orderController.deleteAllOrders);
+
 export default router;
