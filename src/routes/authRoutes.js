@@ -1,6 +1,7 @@
 import express from 'express';
-import { register, login, logout } from '../controllers/authController.js';
+import { register, login, logout, getAllUsers, deleteUser, updateUser } from '../controllers/authController.js';
 import jwt from 'jsonwebtoken';
+import { verifyAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -10,6 +11,12 @@ router.post('/register', register);
 router.post('/login', login);
 // Logout route
 router.post('/logout', logout);
+// Get all users
+router.get('/users', verifyAdmin, getAllUsers);
+// Delete user
+router.delete('/users/:id', verifyAdmin, deleteUser);
+// Update user
+router.put('/users/:id', verifyAdmin, updateUser);
 
 // Verify token and return user role
 router.get('/verify', (req, res) => {
