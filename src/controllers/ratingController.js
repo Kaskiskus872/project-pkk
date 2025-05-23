@@ -66,3 +66,23 @@ export const getAllProductAvgRatings = async (req, res) => {
     res.status(500).json({ message: 'Gagal mengambil rata-rata rating', error: error.message });
   }
 };
+
+// Hapus rating (customer hanya bisa hapus miliknya, admin bisa hapus semua)
+export const deleteRating = async (req, res) => {
+  try {
+    const ratingId = req.params.ratingId;
+    const user = req.user;
+    const rating = await Rating.findByPk(ratingId);
+    if (!rating) {
+      return res.status(404).json({ message: 'Rating tidak ditemukan' });
+    }
+    // Jika bukan admin, hanya boleh hapus rating miliknya sendiri
+    if (user.role !== 'admin' && rating.userId !== user.id) {
+      return res.status(403).json({ message: 'Tidak diizinkan menghapus rating ini' });
+    }
+    await rating.destroy();
+    res.json({ message: 'Rating berhasil dihapus' });
+  } catch (error) {
+    res.status(500).json({ message: 'Gagal menghapus rating', error: error.message });
+  }
+};
